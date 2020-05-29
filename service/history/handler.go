@@ -1878,6 +1878,8 @@ func (h *Handler) RefreshWorkflowTasks(
 	return nil
 }
 
+// HeartbeatFailoverMarkers sends the failover markers to failover coordinator.
+// The coordinator decides when the failvoer finishes based on received failover marker.
 func (h *Handler) HeartbeatFailoverMarkers(
 	ctx context.Context,
 	request *hist.HeartbeatFailoverMarkersRequest,
