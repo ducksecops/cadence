@@ -295,6 +295,37 @@ func (mr *_MockClientRecorder) GetReplicationMessages(
 	return mr.mock.ctrl.RecordCall(mr.mock, "GetReplicationMessages", args...)
 }
 
+// HeartbeatFailoverMarkers responds to a HeartbeatFailoverMarkers call based on the mock expectations. This
+// call will fail if the mock does not expect this call. Use EXPECT to expect
+// a call to this function.
+//
+// 	client.EXPECT().HeartbeatFailoverMarkers(gomock.Any(), ...).Return(...)
+// 	... := client.HeartbeatFailoverMarkers(...)
+func (m *MockClient) HeartbeatFailoverMarkers(
+	ctx context.Context,
+	_Request *history.HeartbeatFailoverMarkersRequest,
+	opts ...yarpc.CallOption,
+) (err error) {
+
+	args := []interface{}{ctx, _Request}
+	for _, o := range opts {
+		args = append(args, o)
+	}
+	i := 0
+	ret := m.ctrl.Call(m, "HeartbeatFailoverMarkers", args...)
+	err, _ = ret[i].(error)
+	return
+}
+
+func (mr *_MockClientRecorder) HeartbeatFailoverMarkers(
+	ctx interface{},
+	_Request interface{},
+	opts ...interface{},
+) *gomock.Call {
+	args := append([]interface{}{ctx, _Request}, opts...)
+	return mr.mock.ctrl.RecordCall(mr.mock, "HeartbeatFailoverMarkers", args...)
+}
+
 // MergeDLQMessages responds to a MergeDLQMessages call based on the mock expectations. This
 // call will fail if the mock does not expect this call. Use EXPECT to expect
 // a call to this function.

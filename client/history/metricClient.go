@@ -662,3 +662,20 @@ func (c *metricClient) RefreshWorkflowTasks(
 	}
 	return err
 }
+
+func (c *metricClient) HeartbeatFailoverMarkers(
+	ctx context.Context,
+	request *h.HeartbeatFailoverMarkersRequest,
+	opts ...yarpc.CallOption,
+) error {
+
+	c.metricsClient.IncCounter(metrics.HistoryClientHeartbeatFailoverMarkersScope, metrics.CadenceClientRequests)
+	sw := c.metricsClient.StartTimer(metrics.HistoryClientHeartbeatFailoverMarkersScope, metrics.CadenceClientLatency)
+	err := c.client.HeartbeatFailoverMarkers(ctx, request, opts...)
+	sw.Stop()
+
+	if err != nil {
+		c.metricsClient.IncCounter(metrics.HistoryClientHeartbeatFailoverMarkersScope, metrics.CadenceClientFailures)
+	}
+	return err
+}

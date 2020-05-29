@@ -214,7 +214,7 @@ func (adh *AdminHandler) DescribeWorkflowExecution(
 		return nil, adh.error(err, scope)
 	}
 
-	shardID := common.WorkflowIDToHistoryShard(*request.Execution.WorkflowId, adh.numberOfHistoryShards)
+	shardID := common.StringToHistoryShard(*request.Execution.WorkflowId, adh.numberOfHistoryShards)
 	shardIDstr := string(shardID)
 	shardIDForOutput := strconv.Itoa(shardID)
 
@@ -400,7 +400,7 @@ func (adh *AdminHandler) GetWorkflowExecutionRawHistory(
 
 	// TODO need to deal with transient decision if to be used by client getting history
 	var historyBatches []*gen.History
-	shardID := common.WorkflowIDToHistoryShard(execution.GetWorkflowId(), adh.numberOfHistoryShards)
+	shardID := common.StringToHistoryShard(execution.GetWorkflowId(), adh.numberOfHistoryShards)
 	_, historyBatches, token.PersistenceToken, size, err = persistence.PaginateHistory(
 		adh.GetHistoryManager(),
 		true, // this means that we are getting history by batch
@@ -536,7 +536,7 @@ func (adh *AdminHandler) GetWorkflowExecutionRawHistoryV2(
 		}, nil
 	}
 	pageSize := int(request.GetMaximumPageSize())
-	shardID := common.WorkflowIDToHistoryShard(
+	shardID := common.StringToHistoryShard(
 		execution.GetWorkflowId(),
 		adh.numberOfHistoryShards,
 	)

@@ -1842,7 +1842,8 @@ func (h *Handler) MergeDLQMessages(
 // RefreshWorkflowTasks refreshes all the tasks of a workflow
 func (h *Handler) RefreshWorkflowTasks(
 	ctx context.Context,
-	request *hist.RefreshWorkflowTasksRequest) (retError error) {
+	request *hist.RefreshWorkflowTasksRequest,
+) (retError error) {
 
 	scope := metrics.HistoryRefreshWorkflowTasksScope
 	h.GetMetricsClient().IncCounter(scope, metrics.CadenceRequests)
@@ -1875,6 +1876,20 @@ func (h *Handler) RefreshWorkflowTasks(
 	}
 
 	return nil
+}
+
+func (h *Handler) HeartbeatFailoverMarkers(
+	ctx context.Context,
+	request *hist.HeartbeatFailoverMarkersRequest,
+) (retError error) {
+
+	scope := metrics.HistoryRefreshWorkflowTasksScope
+	h.GetMetricsClient().IncCounter(scope, metrics.CadenceRequests)
+	sw := h.GetMetricsClient().StartTimer(scope, metrics.CadenceLatency)
+	defer sw.Stop()
+
+	//TODO: wire up the function with failover coordinator
+	return &gen.BadRequestError{Message: "This method has not been implemented."}
 }
 
 // convertError is a helper method to convert ShardOwnershipLostError from persistence layer returned by various

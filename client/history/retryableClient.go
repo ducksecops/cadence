@@ -584,3 +584,16 @@ func (c *retryableClient) RefreshWorkflowTasks(
 
 	return backoff.Retry(op, c.policy, c.isRetryable)
 }
+
+func (c *retryableClient) HeartbeatFailoverMarkers(
+	ctx context.Context,
+	request *h.HeartbeatFailoverMarkersRequest,
+	opts ...yarpc.CallOption,
+) error {
+
+	op := func() error {
+		return c.client.HeartbeatFailoverMarkers(ctx, request, opts...)
+	}
+
+	return backoff.Retry(op, c.policy, c.isRetryable)
+}

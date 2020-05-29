@@ -81,6 +81,12 @@ type Interface interface {
 		opts ...yarpc.CallOption,
 	) (*replicator.GetReplicationMessagesResponse, error)
 
+	HeartbeatFailoverMarkers(
+		ctx context.Context,
+		Request *history.HeartbeatFailoverMarkersRequest,
+		opts ...yarpc.CallOption,
+	) error
+
 	MergeDLQMessages(
 		ctx context.Context,
 		Request *replicator.MergeDLQMessagesRequest,
@@ -450,6 +456,29 @@ func (c client) GetReplicationMessages(
 	}
 
 	success, err = history.HistoryService_GetReplicationMessages_Helper.UnwrapResponse(&result)
+	return
+}
+
+func (c client) HeartbeatFailoverMarkers(
+	ctx context.Context,
+	_Request *history.HeartbeatFailoverMarkersRequest,
+	opts ...yarpc.CallOption,
+) (err error) {
+
+	args := history.HistoryService_HeartbeatFailoverMarkers_Helper.Args(_Request)
+
+	var body wire.Value
+	body, err = c.c.Call(ctx, args, opts...)
+	if err != nil {
+		return
+	}
+
+	var result history.HistoryService_HeartbeatFailoverMarkers_Result
+	if err = result.FromWire(body); err != nil {
+		return
+	}
+
+	err = history.HistoryService_HeartbeatFailoverMarkers_Helper.UnwrapResponse(&result)
 	return
 }
 
